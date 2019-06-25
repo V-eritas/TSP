@@ -127,7 +127,7 @@ class SOM:
 if __name__ == '__main__':
     nodes = pd.read_csv(r'data\TSP100cities.tsp', sep=' ', names=[
                         'ID', 'x', 'y'], header=None, index_col=0)
-    times = np.ones(10)
+    times = np.ones(1)
     i = 0
     while i < len(times):
         s = SOM(nodes, 16000, learning_rate=0.8)
@@ -140,5 +140,5 @@ if __name__ == '__main__':
         ' -> '.join(str(i) for i in path), mincost))
     print('The average running time is {0:.4f} +/- {1:.4f} s '.format(
         times.mean(), times.std()))
-    s.plot()
+    s.plot(r'figure/GA_10_citeis_curve.png')
 # %%

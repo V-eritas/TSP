@@ -145,9 +145,11 @@ class TSP_GA():
         distance = self.distance(self.ga.best.gene)
         return self.path, distance
 
-    def curve(self):
+    def curve(self, filename=None):
         plt.figure(figsize=(5,5))
         plt.plot(range(self.iterations), self.distance_curve, c='r')
+        if filename:
+            plt.savefig(filename)
         plt.show()
         plt.gcf().clear()
 
@@ -155,7 +157,7 @@ class TSP_GA():
         life = self.ga.best
         life.show()
 
-    def plot(self,filename='GA_100_cities.png', annotation_size=8, dpi=200, save=True):
+    def plot(self,filename=None, annotation_size=8, dpi=200):
         plt.figure(figsize=(5,5))
         x = self.cities.iloc[self.ga.best.gene,0]
         y = self.cities.iloc[self.ga.best.gene,1]
@@ -164,13 +166,13 @@ class TSP_GA():
         plt.title('Genetic Algorithm for TSP')
         for i in self.ga.best.gene:
             plt.annotate(i, xy = self.cities.iloc[i,:], xytext=self.cities.iloc[i,:]+(4,4) , size=annotation_size)
-        if save:
-            plt.savefig(r'figure/'+filename, dpi=dpi)
+        if filename:
+            plt.savefig(filename, dpi=dpi)
         plt.show()
         plt.gcf().clear()
 
 def main():
-    times = np.ones(10)
+    times = np.ones(1)
     i = 0
     while i < len(times):
         tsp = TSP_GA(r'data\TSP100cities.tsp', 4000)
@@ -184,8 +186,8 @@ def main():
             ' -> '.join(str(i) for i in path), mincost))
     print('The average running time is {0:.4f} +/- {1:.4f} s '.format(
         times.mean(), times.std()))
-    tsp.plot()
-    tsp.curve()
+    tsp.plot(r'figure/GA_100_cities.png')
+    tsp.curve(r'figure/GA_100_cities_curve.png')
 
 if __name__ == '__main__':
     main()

@@ -122,7 +122,7 @@ class ACO:
         # print('Distance:{}\n'.format(self.best_distance))
         return self.best_path, self.best_distance
 
-    def show(self, filename='ACO_10_cities.png', annotation_size=8, dpi=200, save=False):
+    def show(self, filename=None, annotation_size=8, dpi=200):
         x = self.nodes[self.best_path, 0].tolist()
         x.append(x[0])
         y = self.nodes[self.best_path, 1].tolist()
@@ -132,14 +132,16 @@ class ACO:
         for i in self.best_path:
             plt.annotate(
                 i, xy=self.nodes[i], xytext=self.nodes[i]+(4, 4), size=annotation_size)
-        if save:
+        if filename:
             plt.savefig(filename, dpi=dpi)
         plt.show()
         plt.gcf().clear()
 
-    def plot(self):
+    def plot(self, filename=None, dpi=200):
         plt.figure(figsize=(5,5))
         plt.plot(range(self.steps), self.distance_curve, c='r')
+        if filename:
+            plt.savefig(filename, dpi=dpi)
         plt.show()
         plt.gcf().clear()
 
@@ -148,7 +150,7 @@ class ACO:
 if __name__ == '__main__':
     _nodes = pd.read_csv(r'data/TSP10cities.tsp',
                          sep=' ', header=None, index_col=0).values
-    times = np.ones(10)
+    times = np.ones(1)
     i = 0
     while i < len(times):
         acs = ACO(colony_size=10, steps=50, nodes=_nodes)
@@ -161,8 +163,8 @@ if __name__ == '__main__':
         ' -> '.join(str(i) for i in path), mincost))
     print('The average running time is {0:.4f} +/- {1:.4f} s '.format(
         times.mean(), times.std()))
-    acs.show()
-    acs.plot()
+    acs.show(filename='figure/ACO_10_cities.png')
+    acs.plot(filename='figure/ACO_10_cities_curve.png')
 
 
 # %%
